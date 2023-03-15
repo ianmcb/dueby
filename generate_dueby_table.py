@@ -3,6 +3,7 @@ from pprint import pprint
 from datetime import datetime, timedelta
 import requests
 from time import strftime, localtime
+import re
 
 exprd = False
 
@@ -138,6 +139,9 @@ goals = response.json()
 
 #for goal in goals[0:9]:
 for goal in goals:
+    slug = goal['slug']
+    if re.match(r'read-2022\d{3}', slug):
+            continue
     print("dueby for goal ", goal['slug'])
     table = generate_dueby_table(goal, 14)
     pprint_dueby(table)
