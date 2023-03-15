@@ -142,7 +142,7 @@ for goal in goals:
     slug = goal['slug']
     if re.match(r'read-2022\d{3}', slug):
             continue
-    print("dueby for goal ", goal['slug'])
+    print(f"{goal['slug']} dueby table")
     table = generate_dueby_table(goal, 14)
     pprint_dueby(table)
     print("")
