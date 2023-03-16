@@ -1,9 +1,13 @@
+# "If you're not embarrassed by your code, you've waited too long to release it"
+#   -- Reid Hoffman
+
 import json
+import os
+import re
 from pprint import pprint
 from datetime import datetime, timedelta
 import requests
 from time import strftime, localtime
-import re
 
 exprd = False
 
@@ -80,8 +84,6 @@ def roadfunc(fullroad, x, siru):
     if x<fullroad[i][0]: return rseg(fullroad[i-1][0], fullroad[i-1][1], fullroad[i][2]/siru, x)
   return fullroad[-1][1]
 
-from datetime import datetime, timedelta
-
 def generate_dueby_table(goal, days):
     fullroad = goal['fullroad']
     rate = goal['rate']
@@ -123,10 +125,9 @@ def dayfloor(t):
     return int((datetime(dt.year, dt.month, dt.day) - datetime(1970, 1, 1)).total_seconds())
 
 
-#print("getting goals")
 # Set your Beeminder username and auth_token
-username   = 'ianminds'
-auth_token = 's3cr3t'
+username = os.environ.get('BEEMINDER_USER')
+auth_token = os.environ.get('BEEMINDER_TOKEN')
 
 # Set the API endpoint and parameters
 api_endpoint = f'https://www.beeminder.com/api/v1/users/{username}/goals.json'
@@ -137,7 +138,6 @@ response = requests.get(api_endpoint, params=params)
 # Parse the response JSON and extract the list of goals
 goals = response.json()
 
-#for goal in goals[0:9]:
 for goal in goals:
     slug = goal['slug']
     if re.match(r'read-2022\d{3}', slug):
